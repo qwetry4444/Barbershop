@@ -7,5 +7,5 @@ Route::get('/', function () {
 });
 
 Route::get('/hello', function () {
-    return view('hello', ['title' => 'Hello world']);
+    return view('hello', ['title' => "Мишкин Максим 609-22 Настройка окружения и создание проекта"]);
 });
