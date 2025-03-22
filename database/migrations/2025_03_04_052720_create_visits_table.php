@@ -17,8 +17,8 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('barber_id');
             $table->foreign('barber_id')->references('id')->on('barber');
-            $table->date('date');
-            $table->integer('cost');
+            $table->timestamp('start_at');
+            $table->timestamp('end_at');
         });
     }
 
