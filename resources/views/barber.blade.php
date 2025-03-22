@@ -18,7 +18,7 @@
         @foreach($barber->works as $work)
             <tr>
                 <td>{{$work->id}}</td>
-                <td>{{$work->image_id}}</td>
+                <td>{{$work->work_image_id}}</td>
             </tr>
         @endforeach
     </table>
