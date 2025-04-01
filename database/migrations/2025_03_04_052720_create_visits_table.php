@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('visit', function (Blueprint $table) {
+        Schema::create('visits', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('barber_id');
-            $table->foreign('barber_id')->references('id')->on('barber');
-            $table->timestamp('start_at');
-            $table->timestamp('end_at');
+            $table->foreign('barber_id')->references('id')->on('users');
+            $table->timestamp('start_at')->nullable();
+            $table->timestamp('end_at')->nullable();
         });
     }
 

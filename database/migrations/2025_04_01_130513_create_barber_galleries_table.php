@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('visit_service', function (Blueprint $table) {
+        Schema::create('barber_galleries', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('visit_id');
-            $table->foreign('visit_id')->references('id')->on('visit');
-            $table->unsignedBigInteger('service_id');
-            $table->foreign('service_id')->references('id')->on('service');
+            $table->unsignedBigInteger('barber_id');
+            $table->foreign('barber_id')->references('id')->on('users');
+            $table->string('image_path');
+            $table->string('title')->nullable();
         });
     }
 
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('visits_service');
+        Schema::dropIfExists('barber_galleries');
     }
 };
