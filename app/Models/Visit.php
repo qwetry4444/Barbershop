@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Visit extends Model
 {
     use HasFactory;
-    public function services(): BelongsToMany
+    public function service(): BelongsToMany
     {
         return $this->belongsToMany(Service::class, 'visit_service');
     }
