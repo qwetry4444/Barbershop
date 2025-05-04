@@ -30,8 +30,8 @@
 
     <br>
     <label for="datetime">Время</label>
-    <input type="datetime" id="datetime" name="datetime" class="datetime" value="{{ old('datetime') }}">
-    @error('datetime')
+    <input type="datetime" id="start_at" name="start_at" class="datetime" value="{{ old('start_at') }}">
+    @error('start_at')
     <div class="is-invalid">{{$message}}</div>
     @enderror
 

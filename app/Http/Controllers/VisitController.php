@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Service;
 use App\Models\User;
 use App\Models\Visit;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 
 class VisitController extends Controller
@@ -36,7 +37,7 @@ class VisitController extends Controller
     {
         $validated = $request->validate([
             'barber_id' => 'required',
-            'datetime' => 'required'
+            'start_at' => 'required'
         ]);
 
         $visit = new Visit($validated);
@@ -71,6 +72,10 @@ class VisitController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        if (!Gate::allows('update-visit', Visit::all()->where('id', $id)->first())) {
+            return redirect('/error')->with('message', 'У вас нет прав на изменение этой записи');
+        }
+
         $validated = $request->validate([
             'client_id' => 'required',
             'start_at' => 'required',
@@ -99,6 +104,9 @@ class VisitController extends Controller
         if ($visit->service()->exists())
             return redirect('visits')->with('error_delete', "Ну удалось удалить запись, так как с ней связаны услуги");
 
+        if (!Gate::allows('destroy-visit')) {
+            return redirect('/error')->with('message', 'У вас нет прав на удаление записи');
+        }
         Visit::destroy($id);
         return redirect('visits')->with('success_delete', "Запись успешно удалена");
     }
