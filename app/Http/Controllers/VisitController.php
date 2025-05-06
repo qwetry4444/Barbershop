@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Service;
 use App\Models\User;
 use App\Models\Visit;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 
@@ -15,8 +16,13 @@ class VisitController extends Controller
      */
     public function index()
     {
+        if (!Gate::allows('read-visits')) {
+            return redirect('/error')->with('message', 'У вас нет прав на чтение записей');
+        }
+
         return view('visits', [
-            'visits' => Visit::all()
+            'visits' => Visit::all(),
+            'user' => Auth::user()
         ]);
     }
 
@@ -35,6 +41,10 @@ class VisitController extends Controller
      */
     public function store(Request $request)
     {
+        if (!Gate::allows('create-visit')) {
+            return redirect('/error')->with('message', 'У вас нет прав на создание записи');
+        }
+
         $validated = $request->validate([
             'barber_id' => 'required',
             'start_at' => 'required'
@@ -50,6 +60,10 @@ class VisitController extends Controller
      */
     public function show(string $id)
     {
+        if (!Gate::allows('read-visit', Visit::all()->where('id', $id)->first())) {
+            return redirect('/error')->with('message', 'У вас нет прав на чтение записи');
+        }
+
         return view('visit_services', [
             'visit' => Visit::all()->where('id', $id)->first()
         ]);

@@ -35,8 +35,12 @@
                 </td>
                 <td>{{$visit->service->sum('price')}}</td>
                 <td>
-                    <a href="{{url('visit/edit/'.$visit->id)}}">Редактировать</a>
-                    <a href="{{url('visit/destroy/'.$visit->id)}}">Удалить</a>
+                    @if($user->role->name == "admin" || ($user->role->name == "barber" && $visit->barber_id == $user->id))
+                        <a href="{{url('visit/edit/'.$visit->id)}}">Редактировать</a>
+                    @endif
+                    @if($user->role->name == "admin")
+                        <a href="{{url('visit/destroy/'.$visit->id)}}">Удалить</a>
+                    @endif
                 </td>
             </tr>
         @endforeach

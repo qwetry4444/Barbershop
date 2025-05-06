@@ -22,4 +22,9 @@ class Visit extends Model
     {
         return $this->belongsTo(User::class, 'barber_id');
     }
+
+    public function client(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }
