@@ -1,5 +1,5 @@
 @if ($paginator->hasPages())
-    <nav class="d-flex justify-items-center justify-content-between">
+    <nav class="d-flex  justify-content-between" aria-label="Page navigation example">
         <div class="d-flex justify-content-between flex-fill d-sm-none">
             <ul class="pagination">
                 {{-- Previous Page Link --}}
@@ -26,19 +26,7 @@
             </ul>
         </div>
 
-        <div class="d-none flex-sm-fill d-sm-flex align-items-sm-center justify-content-sm-between">
-            <div>
-                <p class="small text-muted">
-                    {!! __('Showing') !!}
-                    <span class="fw-semibold">{{ $paginator->firstItem() }}</span>
-                    {!! __('to') !!}
-                    <span class="fw-semibold">{{ $paginator->lastItem() }}</span>
-                    {!! __('of') !!}
-                    <span class="fw-semibold">{{ $paginator->total() }}</span>
-                    {!! __('results') !!}
-                </p>
-            </div>
-
+        <div class="d-none flex-sm-fill d-sm-flex justify-content-sm-between">
             <div>
                 <ul class="pagination">
                     {{-- Previous Page Link --}}
@@ -85,4 +73,18 @@
             </div>
         </div>
     </nav>
+
+    <form method="get" action="{{ url('barbers') }}" class="d-flex align-items-end gap-2 mb-3">
+        <div>
+            <label for="perpage" class="form-label mb-2">Элементов на странице:</label>
+            <select name="perpage" id="perpage" class="form-select w-auto mb-2">
+                <option value="2" @if($paginator->perPage() == 2) selected @endif>2</option>
+                <option value="3" @if($paginator->perPage() == 3) selected @endif>3</option>
+                <option value="4" @if($paginator->perPage() == 4) selected @endif>4</option>
+            </select>
+        </div>
+        <div class="w-auto">
+            <button type="submit" class="btn btn-primary">Изменить</button>
+        </div>
+    </form>
 @endif

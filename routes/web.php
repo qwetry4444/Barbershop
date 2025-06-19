@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\BarberController;
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\VisitController;
@@ -20,10 +22,26 @@ Route::get('/hello', function () {
 Route::get('/barbers',  [BarberController::class, 'index'])->middleware('auth');
 
 Route::get('services', [ServiceController::class, 'index']);
+Route::get('pick_date/{barber_id}', [CalendarController::class, 'index']);
 
 Route::get('service/{id}', [ServiceController::class, 'show'])->middleware('auth');
+Route::get('barber/{barber_id}/visits_dates', [CalendarController::class, 'json']);
+Route::get('barber/{barber_id}/visit_times', [CalendarController::class, 'visitsOnDate']);
 
 Route::get('visits', [VisitController::class, 'index']);
+
+Route::get('booking/barber', [BookingController::class, 'chooseBarber']);
+Route::post('booking/barber', [BookingController::class, 'postBarber']);
+
+Route::get('booking/service', [BookingController::class, 'chooseService']);
+Route::post('booking/service', [BookingController::class, 'postService']);
+
+Route::get('booking/time', [BookingController::class, 'chooseTime']);
+Route::post('booking/time', [BookingController::class, 'postTime']);
+//Route::post('visit/{visit_id}/book', [BookingController::class, 'postTime']);
+
+Route::get('booking/confirm', [BookingController::class, 'confirm']);
+Route::post('booking/confirm', [BookingController::class, 'postConfirm']);
 
 Route::get('visit/create', [VisitController::class, 'create']);
 Route::get('visit/edit/{id}', [VisitController::class, 'edit']);

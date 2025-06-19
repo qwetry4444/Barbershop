@@ -13,6 +13,10 @@ class Visit extends Model
 
     protected $fillable = ['barber_id', 'start_at'];
 
+    protected $casts = [
+        'start_at' => 'datetime'
+    ];
+
     public function service(): BelongsToMany
     {
         return $this->belongsToMany(Service::class, 'visit_service');

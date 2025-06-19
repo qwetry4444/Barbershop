@@ -1,60 +1,65 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Записи</title>
-</head>
-<body>
-    <h2>Информация о посещениях/записях</h2>
+@extends('layout')
+@section('content')
+<div class="container py-4">
+    <h2 class="mb-4 text-primary">Информация о посещениях / записях</h2>
 
-    <table border="1">
-        <thead>
-            <td>Id</td>
-            <td>Id клиента</td>
-            <td>Id барбера</td>
-            <td>Время начала</td>
-            <td>Время окончания</td>
-            <td>Предоставленные услуги</td>
-            <td>Стоимость</td>
-            <td>Действия</td>
-        </thead>
-        @foreach($visits as $visit)
-            <tr>
-                <td>{{$visit->id}}</td>
-                <td>{{$visit->user_id}}</td>
-                <td>{{$visit->barber_id}}</td>
-                <td>{{$visit->start_at}}</td>
-                <td>{{$visit->end_at}}</td>
-                <td>
-                    @foreach($visit->service as $service)
-                        {{$service->name}} - {{$service->price}}₽ <br>
-                    @endforeach
-                </td>
-                <td>{{$visit->service->sum('price')}}</td>
-                <td>
-                    @if($user->role->name == "admin" || ($user->role->name == "barber" && $visit->barber_id == $user->id))
-                        <a href="{{url('visit/edit/'.$visit->id)}}">Редактировать</a>
-                    @endif
-                    @if($user->role->name == "admin")
-                        <a href="{{url('visit/destroy/'.$visit->id)}}">Удалить</a>
-                    @endif
-                </td>
-            </tr>
-        @endforeach
-    </table>
     @if(session('success_delete'))
-        <div style="color: green; font-weight: bold; margin-bottom: 10px;">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success_delete') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
         </div>
     @endif
 
     @if(session('error_delete'))
-        <div style="color: red; font-weight: bold; margin-bottom: 10px;">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
             {{ session('error_delete') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
         </div>
     @endif
-</body>
-</html>
+
+    {{-- Таблица посещений --}}
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered align-middle">
+            <thead class="table-light text-center">
+            <tr>
+                <th>ID</th>
+                <th>ID клиента</th>
+                <th>ID барбера</th>
+                <th>Начало</th>
+                <th>Окончание</th>
+                <th>Услуги</th>
+                <th>Стоимость</th>
+                <th>Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($visits as $visit)
+                <tr>
+                    <td class="text-center">{{ $visit->id }}</td>
+                    <td class="text-center">{{ $visit->user_id }}</td>
+                    <td class="text-center">{{ $visit->barber_id }}</td>
+                    <td>{{ Carbon::parse($visit->start_at)->format('d.m.Y H:i') }}</td>
+                    <td>{{ Carbon::parse($visit->end_at)->format('d.m.Y H:i') }}</td>
+                    <td>
+                        @foreach($visit->service as $service)
+                            <div>{{ $service->name }} — {{ $service->price }}₽</div>
+                        @endforeach
+                    </td>
+                    <td>{{ $visit->service->sum('price') }}₽</td>
+                    <td>
+                        @if($user->role->name === 'admin' || ($user->role->name === 'barber' && $visit->barber_id === $user->id))
+                            <a href="{{ url('visit/edit/'.$visit->id) }}" class="btn btn-outline-primary  m-1">Редактировать</a>
+                        @endif
+                        @if($user->role->name === 'admin')
+                            <a href="{{ url('visit/destroy/'.$visit->id) }}" class="btn btn-outline-primary "
+                               onclick="return confirm('Вы уверены, что хотите удалить запись?')">Удалить</a>
+                        @endif
+                    </td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@endsection
