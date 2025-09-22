@@ -30,14 +30,14 @@ Route::get('barber/{barber_id}/visit_times', [CalendarController::class, 'visits
 
 Route::get('visits', [VisitController::class, 'index']);
 
-Route::get('booking/barber', [BookingController::class, 'chooseBarber']);
-Route::post('booking/barber', [BookingController::class, 'postBarber']);
+Route::get('booking/barber', [BookingController::class, 'chooseBarber'])->middleware('auth');;
+Route::post('booking/barber', [BookingController::class, 'postBarber'])->middleware('auth');;
 
-Route::get('booking/service', [BookingController::class, 'chooseService']);
-Route::post('booking/service', [BookingController::class, 'postService']);
+Route::get('booking/service', [BookingController::class, 'chooseService'])->middleware('auth');;
+Route::post('booking/service', [BookingController::class, 'postService'])->middleware('auth');;
 
-Route::get('booking/time', [BookingController::class, 'chooseTime']);
-Route::post('booking/time', [BookingController::class, 'postTime']);
+Route::get('booking/time', [BookingController::class, 'chooseTime'])->middleware('auth');;
+Route::post('booking/time', [BookingController::class, 'postTime'])->middleware('auth');;
 //Route::post('visit/{visit_id}/book', [BookingController::class, 'postTime']);
 
 Route::get('booking/confirm', [BookingController::class, 'confirm']);

@@ -12,6 +12,7 @@
     </ul>
 
     <div class="col-md-3 text-end">
-        <button type="button" class="btn btn-primary">Логин</button>
+        <li><a href="/login" class="nav-link px-2">Логин</a></li>
+        <li><a href="/logout" class="nav-link px-2">Выйти</a></li>
     </div>
 </header>

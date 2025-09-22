@@ -17,7 +17,6 @@
         </div>
     @endif
 
-    {{-- Таблица посещений --}}
     <div class="table-responsive">
         <table class="table table-hover table-bordered align-middle">
             <thead class="table-light text-center">
@@ -38,8 +37,8 @@
                     <td class="text-center">{{ $visit->id }}</td>
                     <td class="text-center">{{ $visit->user_id }}</td>
                     <td class="text-center">{{ $visit->barber_id }}</td>
-                    <td>{{ Carbon::parse($visit->start_at)->format('d.m.Y H:i') }}</td>
-                    <td>{{ Carbon::parse($visit->end_at)->format('d.m.Y H:i') }}</td>
+                    <td>{{ \Carbon\Carbon::parse($visit->start_at)->format('d.m.Y H:i') }}</td>
+                    <td>{{ \Carbon\Carbon::parse($visit->end_at)->format('d.m.Y H:i') }}</td>
                     <td>
                         @foreach($visit->service as $service)
                             <div>{{ $service->name }} — {{ $service->price }}₽</div>

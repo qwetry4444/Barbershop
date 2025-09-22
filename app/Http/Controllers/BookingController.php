@@ -19,7 +19,7 @@ class BookingController extends Controller
     {
         $request->validate(['barber_id' => 'required|exists:users,id']);
         session(['booking.barber_id' => $request->barber_id]);
-        return redirect()->intended('booking/service');
+        return redirect('booking/service');
     }
 
     public function chooseService()
@@ -32,30 +32,22 @@ class BookingController extends Controller
     {
         $request->validate(['service_id' => 'required|exists:services,id']);
         session(['booking.service_id' => $request->service_id]);
-        return redirect()->intended('booking/time');
+        return redirect('booking/time');
     }
 
     public function chooseTime()
     {
         $barberId = session('booking.barber_id');
-        $serviceId = session('booking.service_id');
-
         $barber = User::find($barberId);
-        $availableVisits = Visit::where('barber_id', $barberId)
-            ->whereNull('user_id')
-            ->where('start_at', '>', now())
-            ->orderBy('start_at')
-            ->get();
 
         return view('pick_time', ['barber' => $barber]);
     }
 
     public function postTime(Request $request)
     {
-
         $request->validate(['visit_id' => 'required|exists:visits,id']);
         session(['booking.visit_id' => $request->visit_id]);
-        return redirect()->intended('booking/confirm');
+        return redirect('booking/confirm');
     }
 
     public function confirm()
@@ -74,10 +66,8 @@ class BookingController extends Controller
             $visit->user_id = auth()->id();
             $visit->save();
         }
-
-
         session()->forget('booking');
 
-        return redirect()->intended('booking/barber')->with('success', 'Вы успешно записаны!');
+        return redirect('booking/barber')->with('success', 'Вы успешно записаны!');
     }
 }

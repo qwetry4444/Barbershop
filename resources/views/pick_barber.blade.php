@@ -53,7 +53,7 @@
 
 
             <button class="btn btn-primary d-block mx-auto my-3">
-                Выбрать услугу
+                Подтвердить выбор
             </button>
 
 
