@@ -15,6 +15,13 @@ class User extends Authenticatable
 {
     use HasFactory, HasApiTokens, Notifiable;
 
+    protected $hidden = [
+        'password',
+        'remember_token'
+    ];
+
+
+
     public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);
@@ -61,7 +68,6 @@ class User extends Authenticatable
     public static function barberNearestVisits(string $barber_id): \Illuminate\Support\Collection
     {
         $barber = self::find($barber_id);
-
         return $barber ? $barber->nearestVisits() : collect();
     }
 }

@@ -18,11 +18,11 @@ class AuthController extends Controller
         $user = User::where('email', $fields['email'])->first();
 
         if (!$user) {
-            return response(['message' => 'Wrong email'], 401);
+            return response(['message' => 'Неправильный логин'], 401);
         }
 
         if (!Hash::check($request['password'], $user->password)) {
-            return response(['message' => 'Wrong password'], 401);
+            return response(['message' => 'Неправильный пароль'], 401);
         }
 
         $token = $user->createToken('myapptoken')->plainTextToken;

@@ -2,24 +2,42 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Service;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class ServiceControllerApi extends Controller
+class BarberControllerApi extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        return response(Service::limit($request->perpage ?? 5)
+        $barberRoleId = Role::where('name', 'barber')->value('id');
+
+        $barbers = User::where('role_id', $barberRoleId)
+            ->limit($request->perpage ?? 5)
             ->offset(($request->perpage ?? 5) * ($request->page ?? 0))
-            ->get());
+            ->get();
+        
+        return response($barbers);
     }
 
     public function total()
     {
-        return response(Service::all()->count());
+        $barberRoleId = Role::where('name', 'barber')->value('id');
+
+        $count = User::where('role_id', $barberRoleId)->count();
+
+        return response($count);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        //
     }
 
     /**
@@ -27,7 +45,7 @@ class ServiceControllerApi extends Controller
      */
     public function show(string $id)
     {
-        return response(Service::class::find($id));
+        //
     }
 
     /**
