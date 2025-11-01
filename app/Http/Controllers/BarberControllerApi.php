@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Role;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class BarberControllerApi extends Controller
@@ -18,8 +19,24 @@ class BarberControllerApi extends Controller
         $barbers = User::where('role_id', $barberRoleId)
             ->limit($request->perpage ?? 5)
             ->offset(($request->perpage ?? 5) * ($request->page ?? 0))
-            ->get();
-        
+            ->get()
+            ->map(function ($barber) {
+                if ($barber->start_work_at) {
+                    $years = round(Carbon::parse($barber->start_work_at)->diffInYears(Carbon::now()));
+                    if ($years == 0) {
+                        $barber->experience = "Меньше года";
+                    } else if ($years % 10 == 1) {
+                        $barber->experience = "{$years} год";
+                    } else if (in_array($years % 10, [2, 3, 4])){
+                        $barber->experience = "{$years} года";
+                    }
+                    else {
+                        $barber->experience = "{$years} лет";
+                    }
+                }
+                return $barber;
+            });
+
         return response($barbers);
     }
 
