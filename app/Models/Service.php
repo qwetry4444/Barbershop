@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Service extends Model
 {
     use HasFactory;
+    protected $fillable = ['name', 'price', 'picture_url'];
     public function images(): HasMany
     {
         return $this->hasMany(ServiceImage::class);

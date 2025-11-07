@@ -55,3 +55,16 @@ Route::get('error', function () {
 });
 
 
+use Illuminate\Support\Facades\Storage;
+
+Route::get('/test-s3', function () {
+    try {
+        $filePath = 'test.txt';
+        Storage::disk('s3')->put($filePath, 'Hello Yandex Cloud!');
+        $url = Storage::disk('s3')->url($filePath);
+        $file = Storage::disk('s3')->url('1.png');
+        dd($file);
+    } catch (\Exception $e) {
+        return $e->getMessage();
+    }
+});

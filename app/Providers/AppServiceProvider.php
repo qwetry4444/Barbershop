@@ -43,5 +43,9 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('read-visit', function (User $user, Visit $visit) {
             return in_array($user->role->name, ['admin', 'barber']) || $visit->client->id == $user->id;
         });
+
+        Gate::define('create-service', function (User $user) {
+            return $user->role->name == "admin";
+        });
     }
 }
