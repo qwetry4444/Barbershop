@@ -55,10 +55,9 @@ return [
             'url' => env('AWS_URL'),
             'throw' => false,
             'http' => [
-                'verify' => false  // Отключаем проверку SSL (только для разработки!)
+                'verify' => false
             ],
         ],
-
     ],
 
     /*
